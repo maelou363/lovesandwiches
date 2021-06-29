@@ -44,16 +44,16 @@ def validate_data(values):
 
     return True
 
-def update_sales_worksheet(data):
-    """ Update sales worksheet and add new row"""
-    print("Updating sales worksheet.... \n")
-    sales_worksheet = SHEET.worksheet('sales')
-    sales_worksheet.append_row(data)
-    print("Sales worksheet updated succesfully. \n")
+def update_worksheet(data, worksheet):
+    ''' Updating both Surplus and Sales worksheet'''
+    print(f"Updating {worksheet} worksheet.... \n")
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f"{worksheet} worksheet updated successfully \n")
 
 def calculate_surplus_data(sales_row):
     """ Compare sales with stocks and calculate surplus for each item type"""
-    print('Calcuating SurplusData... \n')
+    print('Calcuating Surplus Data... \n')
     stock = SHEET.worksheet("stock").get_all_values()
     stock_row = stock[-1]
     
@@ -68,10 +68,10 @@ def main():
     """ Runs all program functions"""
     data = get_sales_data()
     sales_data = [int(num) for num in data]
-    update_sales_worksheet(sales_data)
-    calculate_surplus_data(sales_data)
+    update_worksheet(sales_data, "sales")
     new_surplus_data = calculate_surplus_data(sales_data)
-    print(new_surplus_data)
+    update_worksheet(new_surplus_data, "surplus")
+
 
 print("Welcome to Love Sandiwches Data Automation\n")
 main()
